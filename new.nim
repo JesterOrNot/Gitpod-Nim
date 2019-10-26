@@ -2,7 +2,8 @@ import os
 import rdstdin
 import strutils
 import terminal
-
+import random
+randomize()
 proc newBoard(): array[3,array[3,string]] =
     let board = [["null","null","null"],["null","null","null"],["null","null","null"]]
     return board
@@ -83,7 +84,21 @@ proc lazyCpu(theBoard:var array[3, array[3,string]], playerIcon:string): array[3
                 theBoard[i][j] = playerIcon;
                 sleep 1000
                 return theBoard
-
+proc randomCpu(theBoard:var array[3,array[3,string]], icon:string):array[3,array[3,string]] =
+    for i in 0..2:
+        for j in 0..2:
+            var randomNum:int = rand(6)
+            if randomNum mod 2 == 0 and theBoard[i][j] == "null":
+                theBoard[i][j] = icon
+                echo "Thinking....."
+                sleep(1000);
+                return theBoard;
+    for i in 0..2:
+        for j in 0..2:
+            if theBoard[i][j] == "null":
+                theBoard[i][j] = icon;
+                sleep(1000)
+                return theBoard
 proc main():void =
     try:
         var data = mainMenu()
@@ -93,32 +108,32 @@ proc main():void =
         while (true):
             if (playerOneTurn == true):
                 if data[0] == "cpu" and data[2] == "0":
-                    lazyCpu(myBoard, "X")
+                    myBoard = lazyCpu(myBoard, "X")
                 elif data[0] == "cpu" and data[2] == "1":
-                    randomCpu(myBoard, "X")
+                    myBoard = randomCpu(myBoard, "X")
                 else:
                     try:
-                        makeMove(myBoard, "X")
+                        myBoard = makeMove(myBoard, "X")
                     except:
                         echo "The board isn't that big!"
-                        makeMove(myBoard, "X")
+                        myBoard = makeMove(myBoard, "X")
                 printBoard(myBoard)
                 playerOneTurn = false
             else:
                 if data[1] == "cpu" and data[3] == "0":
-                    lazyCpu(myBoard, "0")
+                    myBoard = lazyCpu(myBoard, "0")
                 elif data[1] == "cpu" and data[3] == "1":
-                    randomCpu(myBoard, "0")
+                    myBoard = randomCpu(myBoard, "0")
                 else:
                     try:
-                        makeMove(myBoard, "0")
+                        myBoard = makeMove(myBoard, "0")
                     except:
                         echo "The board isn't that big!"
-                        makeMove(myBoard, "0")
+                        myBoard = makeMove(myBoard, "0")
                 printBoard(myBoard)
                 playerOneTurn = true
-            isTrue = isFull(myBoard)
-            isOver = isGameOver(myBoard)
+            var isTrue = isDraw(myBoard)
+            var isOver = isGameOver(myBoard)
             if isTrue:
                 sleep 100
                 echo "\nIt's A Tie!"
