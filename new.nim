@@ -109,14 +109,14 @@ proc isGameOver(theboard:array[3,array[3,string]]): int = # Exit code 0 means pl
         (theboard[0][0] == "X" and theboard[1][1] == "X" and theboard[2][2] == "X") or
         (theboard[0][2] == "X" and theboard[1][1] == "X" and theboard[2][0] == "X"):
             return 0
-    elif (theboard[0][0] == "0" and theboard[0][1] == "0" and theboard[0][2] == "0") \
-            or (theboard[0][0] == "0" and theboard[1][0] == "0" and theboard[2][0] == "0") \
-            or (theboard[1][0] == "0" and theboard[1][1] == "0" and theboard[1][2] == "0") \
-            or (theboard[2][0] == "0" and theboard[2][1] == "0" and theboard[2][2] == "0") \
-            or (theboard[0][1] == "0" and theboard[1][1] == "0" and theboard[2][1] == "0") \
-            or (theboard[0][2] == "0" and theboard[1][2] == "0" and theboard[2][2] == "0") \
-            or (theboard[0][0] == "0" and theboard[1][1] == "0" and theboard[2][2] == "0") \
-            or (theboard[0][2] == "0" and theboard[1][1] == "0" and theboard[2][0] == "0"):
+    elif (theboard[0][0] == "0" and theboard[0][1] == "0" and theboard[0][2] == "0") or
+        (theboard[0][0] == "0" and theboard[1][0] == "0" and theboard[2][0] == "0") or
+        (theboard[1][0] == "0" and theboard[1][1] == "0" and theboard[1][2] == "0") or
+        (theboard[2][0] == "0" and theboard[2][1] == "0" and theboard[2][2] == "0") or
+        (theboard[0][1] == "0" and theboard[1][1] == "0" and theboard[2][1] == "0") or
+        (theboard[0][2] == "0" and theboard[1][2] == "0" and theboard[2][2] == "0") or
+        (theboard[0][0] == "0" and theboard[1][1] == "0" and theboard[2][2] == "0") or
+        (theboard[0][2] == "0" and theboard[1][1] == "0" and theboard[2][0] == "0"):
         return 1
     else:
         return 2
