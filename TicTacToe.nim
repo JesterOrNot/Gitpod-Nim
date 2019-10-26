@@ -60,7 +60,8 @@ proc makeMove(theBoard:var array[3,array[3,string]],playerIcon:string):array[3, 
         var theBoard = makeMove(theBoard,playerIcon)
     return theBoard
 proc getPlayerTypes():array[2, string] =
-    var choice1 = readLineFromStdin "Welcome to Tic-Tac-Toe!\nIs player one a cpu or a normal player(cpu/play)?: "
+    echo "Welcome to Tic-Tac-Toe!"
+    var choice1 = readLineFromStdin "Is player one a cpu or a normal player(cpu/play)?: "
     var choice2 = readLineFromStdin "Is player two a cpu or a normal(cpu/play)?: "
     if (choice1 == "play" or choice1 == "cpu") and (choice2 == "play" or choice2 == "cpu"):
         var output = [choice1, choice2]
@@ -121,6 +122,12 @@ proc isGameOver(theboard:array[3,array[3,string]]): int = # Exit code 0 means pl
     else:
         return 2
 proc main():void =
+    proc againOrNo():void =
+        var prompt = readLineFromStdin "Do you want to play again(y/n)?: "
+        if prompt == "y":
+            main()
+        else:
+            echo "Ok, Bye!"
     try:
         var data = mainMenu()
         var myBoard = newBoard()
