@@ -17,7 +17,14 @@ proc printBoard(theBoard: array[3, array[3, string]]):void =
                 setForeGroundColor(fgCyan)
                 stdout.write "-"
             else:
-                stdout.write theBoard[i][m]
+                if theBoard[i][m] == "X":
+                    setForeGroundColor(fgGreen)
+                    stdout.write theBoard[i][m]
+                    setForeGroundColor(fgDefault)
+                else:
+                    setForeGroundColor(fgRed)
+                    stdout.write theBoard[i][m]
+                    setForeGroundColor(fgDefault)
             setForeGroundColor(fgDefault)
             stdout.write "|"
             if m==2:
@@ -51,7 +58,71 @@ proc makeMove(theBoard:var array[3,array[3,string]],playerIcon:string):array[3, 
         echo "Spot Taken!"
         var theBoard = makeMove(theBoard,playerIcon)
     return theBoard
-var board = newBoard()
-printBoard(board)
-board = makeMove(board,"X")
-printBoard(board)
+proc getPlayerTypes():array[2, string] =
+    var choice1 = readLineFromStdin "Welcome to Tic-Tac-Toe!\nIs player one a cpu or a normal player(cpu/play)?: "
+    var choice2 = readLineFromStdin "Is player two a cpu or a normal(cpu/play)?: "
+    if (choice1 == "play" or choice1 == "cpu") and (choice2 == "play" or choice2 == "cpu"):
+        var output = [choice1, choice2]
+        return output
+    else:
+        var x = getPlayerTypes()
+proc mainMenu():array[4, string] =
+    var playerTypes = getPlayerTypes()
+    var levels = [playerTypes[0], playerTypes[1], "null", "null"]
+    if playerTypes[0] == "cpu":
+        var level1 = readLineFromStdin "What level is the player1 cpu(0/1)?: "
+        levels[2] = level1
+    if playerTypes[1] == "cpu":
+        var level2 = readLineFromStdin "What level is the player2 cpu(0/1)?: "
+        levels[3] = level2
+    return levels
+proc main():void =
+    try:
+        var data = mainMenu()
+        var myBoard = newBoard()
+        var playerOneTurn = true
+        printBoard(myBoard)
+        while (true):
+            if (playerOneTurn == true):
+                if data[0] == "cpu" and data[2] == "0":
+                    lazyCpu(myBoard, "X")
+                elif data[0] == "cpu" and data[2] == "1":
+                    randomCpu(myBoard, "X")
+                else:
+                    try:
+                        makeMove(myBoard, "X")
+                    except:
+                        echo "The board isn't that big!"
+                        makeMove(myBoard, "X")
+                printBoard(myBoard)
+                playerOneTurn = false
+            else:
+                if data[1] == "cpu" and data[3] == "0":
+                    lazyCpu(myBoard, "0")
+                elif data[1] == "cpu" and data[3] == "1":
+                    randomCpu(myBoard, "0")
+                else:
+                    try:
+                        makeMove(myBoard, "0")
+                    except:
+                        echo "The board isn't that big!"
+                        makeMove(myBoard, "0")
+                printBoard(myBoard)
+                playerOneTurn = true
+            isTrue = isFull(myBoard)
+            isOver = isGameOver(myBoard)
+            if isTrue:
+                sleep 100
+                echo "\nIt's A Tie!"
+                break
+            if isOver == 1:
+                sleep 100
+                echo "\nPlayer 2 Wins!"
+                break
+            elif isOver == 0:
+                sleep 100
+                echo "\nPlayer 1 Wins"
+                break
+    finally:
+        againOrNo()
+main()
