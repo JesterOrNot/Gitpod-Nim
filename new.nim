@@ -76,6 +76,14 @@ proc mainMenu():array[4, string] =
         var level2 = readLineFromStdin "What level is the player2 cpu(0/1)?: "
         levels[3] = level2
     return levels
+proc lazyCpu(theBoard:var array[3, array[3,string]], playerIcon:string): array[3, array[3,string]] =
+    for i in 0..2:
+        for j in 0..2:
+            if theBoard[i][j] == "null":
+                theBoard[i][j] = playerIcon;
+                sleep 1000
+                return theBoard
+
 proc main():void =
     try:
         var data = mainMenu()
